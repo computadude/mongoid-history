@@ -7,7 +7,7 @@ module Mongoid::History
         scope_name = self.collection_name.singularize.to_sym
         default_options = {
           :on             =>  :all,
-          :except         =>  [:created_at, :updated_at],
+          :except         =>  [:created_at, :updated_at, :modifier_type],
           :modifier_field =>  :modifier,
           :version_field  =>  :version,
           :scope          =>  scope_name,
@@ -34,7 +34,7 @@ module Mongoid::History
         end
 
         field options[:version_field].to_sym, :type => Integer
-        referenced_in options[:modifier_field].to_sym, :class_name => Mongoid::History.modifier_class_name
+        referenced_in options[:modifier_field].to_sym, polymorphic: true
 
         include MyInstanceMethods
         extend SingletonMethods
