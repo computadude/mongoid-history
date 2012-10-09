@@ -36,6 +36,12 @@ module Mongoid::History
         field options[:version_field].to_sym, :type => Integer
         referenced_in options[:modifier_field].to_sym, polymorphic: true
 
+        Mongoid::History.modifier_class_names.each do |klass|
+          klass.constantize.class_eval do
+            has_many self.collection_name.to_sym, as: options[:modifier_field].to_sym
+          end
+        end
+
         include MyInstanceMethods
         extend SingletonMethods
 

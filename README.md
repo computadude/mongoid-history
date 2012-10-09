@@ -3,6 +3,24 @@ mongoid-history
 
 [![Build Status](https://secure.travis-ci.org/aq1018/mongoid-history.png?branch=2.4-stable)](http://travis-ci.org/aq1018/mongoid-history) [![Dependency Status](https://gemnasium.com/aq1018/mongoid-history.png?travis)](https://gemnasium.com/aq1018/mongoid-history)
 
+This fork allows you to track multiple modifier classes (using polymorphic relationship)
+
+For example: 
+
+both Admins and Users can modify records, and both actions need to be
+audited.
+
+Define the modifier class names in an array:
+
+```
+Mongoid::History.modifier_class_names = ["Admin", "User"]
+```
+
+The default class is the one defined in Mongoid::History.modifier_class_name, but when another class performs the update pass its instance as the modifier:
+
+```
+@product.update_attriputes price: 9.99, modifier: @user
+```
 
 In frustration of Mongoid::Versioning, I created this gem for tracking historical changes for any document, including embedded ones. It achieves this by storing all history tracks in a single collection that you define. Embedded documents are referenced by storing an association path, which is an array of `document_name` and `document_id` fields starting from the top most parent document and down to the embedded document that should track history.
 
