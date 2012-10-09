@@ -234,6 +234,8 @@ module Mongoid::History
         @modified_attributes_for_create = nil
         @modified_attributes_for_update = nil
         @history_tracks = nil
+        send "#{Mongoid::History.trackable_class_options[self.collection_name.singularize.to_sym][:modifier_field]}_id=", nil
+        send "#{Mongoid::History.trackable_class_options[self.collection_name.singularize.to_sym][:modifier_field]}_type=", nil
       end
 
       def transform_changes(changes)
